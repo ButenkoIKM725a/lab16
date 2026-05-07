@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include "windows.h"
+
+using namespace std;
+
+class Train {
+private:
+    string destination;    
+    int trainNumber;       
+    int departureHour;     
+    int commonSeats;       
+    int coupeSeats;        
+    int reservedSeats;     
+public:
+    Train(string dest, int num, int hour, int common, int coupe, int reserved) {
+        destination = dest;
+        trainNumber = num;
+        departureHour = hour;
+        commonSeats = common;
+        coupeSeats = coupe;
+        reservedSeats = reserved;
+    }
+    string getDestination() { return destination; }
+    int getDepartureHour() { return departureHour; }
+    int getCommonSeats() { return commonSeats; }
+    int getTrainNumber() { return trainNumber; }
+    void show() {
+        cout << "Poyizd #" << trainNumber << " do " << destination
+            << " | Chas: " << departureHour << ":00"
+            << " | Miscya: zagalni - " << commonSeats
+            << ", Cupe - " << coupeSeats
+            << ", Plackart - " << reservedSeats << endl;
+    }
+};
+int main() {
+    Train trains[] = {
+        Train("Kiyiv", 105, 21, 10, 20, 50),
+        Train("Lviv", 743, 6, 0, 40, 100),
+        Train("Kiyiv", 12, 18, 0, 15, 30),
+        Train("Odesa", 106, 23, 5, 10, 20),
+        Train("kiyiv", 72, 8, 25, 10, 0)
+    };
+    int n = sizeof(trains) / sizeof(trains[0]);
+    string searchDest;
+    int searchHour;
+    cout << "Vedit punkt preznachennya: ";// а) Список поїздів до заданого пункту призначення
+    cin >> searchDest;
+    cout << "\na) Poyizdi do mista " << searchDest << ":" << endl;
+    for (int i = 0; i < n; i++) {
+        if (trains[i].getDestination() == searchDest) {
+            trains[i].show();
+        }
+    }
+    cout << "\nVvedit godinu, pislya yakoi shukati poyizdi: ";// б) Пункт призначення + відправлення після заданої години
+    cin >> searchHour;
+    cout << "b) Poyizdi do " << searchDest << " pislya " << searchHour << ":00:" << endl;
+    for (int i = 0; i < n; i++) {
+        if (trains[i].getDestination() == searchDest && trains[i].getDepartureHour() > searchHour) {
+            trains[i].show();
+        }
+    }
+    cout << "\nc) Poyizdi do " << searchDest << ", sho mayut zagalni miscya:" << endl;// в) Пункт призначення + наявність загальних місць
+    for (int i = 0; i < n; i++) {
+        if (trains[i].getDestination() == searchDest && trains[i].getCommonSeats() > 0) {
+            trains[i].show();
+        }
+    }
+    return 0;
+}
